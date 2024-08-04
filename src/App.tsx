@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { NewNote } from "./pages";
+import { Home, NewNote } from "./pages";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { useMemo } from "react";
 import { v4 as uuidV4 } from "uuid";
@@ -31,7 +31,7 @@ export type Tag = {
 
 function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("notes", []);
-  const [tags, setTags] = useLocalStorage<Tag[]>("notes", []);
+  const [tags, setTags] = useLocalStorage<Tag[]>("tags", []);
 
   const notesWithTags = useMemo(() => {
     return notes.map((note) => {
@@ -62,7 +62,10 @@ function App() {
   return (
     <div className="p-4">
       <Routes>
-        <Route path="/" element={<h1>Home</h1>} />
+        <Route
+          path="/"
+          element={<Home notes={notesWithTags} availableTags={tags} />}
+        />
         <Route
           path="/new"
           element={
